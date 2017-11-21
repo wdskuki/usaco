@@ -11,10 +11,6 @@ TASK: test
 using namespace std;
 
 int main(){
-    ofstream fout ("test.out");
-    ifstream fin ("test.in");
-    int a, b;
-    fin >> a >> b;
-    fout << a + b << endl;
+    cout << "hello world" <<endl;
     return 0;
 }
