@@ -10,28 +10,23 @@ TASK: ride
 
 using namespace std;
 
-int main(){
-    string filename = "ride";
-    ofstream fout("ride.out");
-    ifstream fin("ride.in");
-    string str1, str2;
-    int pro1, pro2;
-    int i, j;
-    while(fin>>str1>>str2){
-        pro1 = 1;
-        pro2 = 1;
-        for(i = 0; i < str1.length(); i++){
-            pro1 *= (str1[i] - 'A' + 1);
-        }
-        for(j = 0; j < str2. length(); j++){
-            pro2 *= (str2[j] - 'A' + 1);
-        }
+ofstream fout("ride.out");
+ifstream fin("ride.in");
 
-        if((pro1 % 47) == (pro2 % 47)){
-            fout << "GO" << endl;
-        }else{
-            fout << "STAY" << endl;
-        }
+int transform(string a){
+    int ret = 1;
+    for(int i = 0; i < a.length(); i++){
+        ret *= (a[i] - 'A' + 1);
+    }
+    return ret % 47;
+}
+int main(){
+    string str1, str2;
+    fin >> str1 >> str2;
+    if(transform(str1) == transform(str2)){
+        fout << "GO" << endl;
+    }else{
+        fout << "STAY" << endl;
     }
     return 0;
 }
