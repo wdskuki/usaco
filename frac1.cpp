@@ -5,11 +5,6 @@ LANG: C++
 TASK: frac1
 */
 
-
-
-/**
- * w,n,e,s，对应0, 1, 2, 3, 左、上、右、下
- */
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -27,7 +22,7 @@ int f[MAX_N+1][MAX_N+1];
 
 vector<pair<int, int> > vec;
 
-//最大公约数
+// 最大公约数（辗转相除法）
 int maxCommDivider(int a, int b){
     if(a == 1 || b == 1){
         return 1;
