@@ -2,23 +2,19 @@
 /*
 ID: dswei191
 LANG: C++
-TASK: main
+TASK: castle
 */
 
-
-
-/**
- * w,n,e,s，对应0, 1, 2, 3, 左、上、右、下
- */
 #include <iostream>
 #include <fstream>
 #include <cmath>
 #include <string>
+#include <string.h>
 
 #define MAX_VALUE 50
 using namespace std;
-ofstream fout("main.out");
-ifstream fin("main.in");
+ofstream fout("castle.out");
+ifstream fin("castle.in");
 
 int N, M;
 string wall[MAX_VALUE+1][MAX_VALUE+1];
@@ -31,7 +27,7 @@ int idxA = -1;
 int idxB = MAX_VALUE+1;
 int idxK;
 
-
+// (W, N, E, S) <=> (0, 1, 2, 3) <=> (左、上、右、下)
 string transform(int a){
     string ret = "";
     for(int i = 0; i < 4; i++){
@@ -48,6 +44,7 @@ string transform(int a){
     }
     return ret;
 }
+
 
 int dfs(int a, int b){
     if(a <1 || a > N || b < 1 || b > M || visit[a][b] == 1){
@@ -77,7 +74,7 @@ int dfs(int a, int b){
     return ret;
 }
 
-
+//洪水算法遍历连通图
 void floodFill(){
     for(int i = 1; i <= N; i++){
         for(int j = 1; j <= M; j++){
@@ -90,23 +87,42 @@ void floodFill(){
     }
 }
 
+// 将数字转化为方向字母
+char direction(int i){
+    char ret;
+    switch(i){
+        case 0:
+            ret = 'W';
+            break;
+        case 1:
+            ret = 'N';
+            break;
+        case 2:
+            ret = 'E';
+            break;
+        case 3:
+            ret = 'S';
+            break;
+    }
+    return ret;
+}
 
+//遍历每个房间的每一堵墙移去之后的连通图
 void removeWall(){
     for(int i = 1; i <= N; i++){
         for(int j = 1; j <= M; j++){
-            memset(visit, 0, sizeof(visit));
             for(int k = 0; k < 4; k++){
-                if(i == 4 && j == 1){
-                    cout<<"hel"<<endl;
-                }
+                memset(visit, 0, sizeof(visit));
                 if (wall[i][j][k] == '1') {
                     wall[i][j][k] = '0';
                     if (visit[i][j] == 0) {
                         int t = dfs(i, j);
                         if (t > maxCreatedRoomSize) {
                             maxCreatedRoomSize = t;
+                            idxA = i;
+                            idxB = j;
+                            idxK = k;
                         } else if (t == maxCreatedRoomSize) {
-                            cout << "hello: " << i << " " << j << " " << k << endl;
                             if (idxB > j) {
                                 maxCreatedRoomSize = t;
                                 idxA = i;
@@ -128,6 +144,7 @@ void removeWall(){
         }
     }
 }
+
 int main(){
     fin >> M >> N;
     for(int i = 1; i <= N; i++){
@@ -137,13 +154,13 @@ int main(){
             wall[i][j] = transform(t);
         }
     }
-    memset(visit, 0, sizeof(visit));
+
     floodFill();
     removeWall();
 
-    cout<< numRoom<<endl;
-    cout<< maxRoomSize<<endl;
-    cout<< maxCreatedRoomSize<<endl;
-    cout << idxA << " "<<idxB << " "<<idxK<<endl;
+    fout<< numRoom<<endl;
+    fout<< maxRoomSize<<endl;
+    fout<< maxCreatedRoomSize<<endl;
+    fout << idxA << " "<<idxB << " "<<direction(idxK)<<endl;
     return 0;
 }
